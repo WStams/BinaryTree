@@ -15,6 +15,11 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.*;
 
+/**
+ * Main-Klasse zum erstellen eines Binärbaums
+ * @author Justin Mertmann, Wayne Stams
+ *
+ */
 public class Main extends JFrame implements ActionListener {
 	private JScrollPane scrollpane;
 	private DisplayPanel panel;
@@ -28,11 +33,16 @@ public class Main extends JFrame implements ActionListener {
 	private JTextField inputTextfield = new JTextField();
 	private static Binaerbaum baum = new Binaerbaum();
 
+	/**
+	 * Konstruktor
+	 * @param t Binärbaum, der erstellt wird
+	 */
 	public Main(Binaerbaum t) {
 		this.setTitle("Binärbaum - Justin & Wayne");
 		loeschenButton.setName("loeschen");
 		hinzufuegenButton.setName("hinzufuegen");
 
+		this.inputTextfield.setBackground(new Color(255,245,227));
 		
 		this.inorderButton.addActionListener(this);
 		this.preorderButton.addActionListener(this);
@@ -55,8 +65,14 @@ public class Main extends JFrame implements ActionListener {
 		this.getContentPane().add(userPanel, BorderLayout.SOUTH);
 		this.getContentPane().add(traversierungsPanel, BorderLayout.CENTER);
 		this.initialize(t);
+		this.setResizable(false);
 	}
 
+	
+	/**
+	 * Initialisiert das DisplayPanel 
+	 * @param baum zu zeichnender Baum
+	 */
 	private void initialize(Binaerbaum baum) {
 		this.panel = new DisplayPanel(baum);
 		this.panel.setPreferredSize(new Dimension(1200, 800));
@@ -66,38 +82,24 @@ public class Main extends JFrame implements ActionListener {
 		this.pack();
 	}
 	
+	/**
+	 * Main Methode
+	 * @param args beim Start übergebene Argumente
+	 */
 	public static void main(String[] args) {
-
+		 baum.elementHinzufuegen("JAN");
+		 baum.elementHinzufuegen("FEB");
+		 baum.elementHinzufuegen("MAE");
+		 baum.elementHinzufuegen("APR");
+		 baum.elementHinzufuegen("MAI");
+		 baum.elementHinzufuegen("JUN");
+		 baum.elementHinzufuegen("JUL");
+		 baum.elementHinzufuegen("AUG");
+		 baum.elementHinzufuegen("SEP");
+		 baum.elementHinzufuegen("OKT");
+		 baum.elementHinzufuegen("NOV");
+		 baum.elementHinzufuegen("DEZ");
 		
-
-		// baum.setRoot(baum.insert(baum.getRoot(), "JAN"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "FEB"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "MAE"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "APR"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "MAI"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "JUL"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "AUG"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "SEP"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "OKT"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "NOV"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "POV"));
-		// baum.setRoot(baum.insert(baum.getRoot(), "DEZ"));
-		//
-
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "50"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "30"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "55"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "25"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "35"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "53"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "60"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "10"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "32"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "37"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "62"));
-		baum.setRoot(baum.elementHinzufuegen(baum.getRoot(), "15"));
-
-
 		baum.inorderTraversierung(baum.getRoot(), 0);
 
 		// Tiefe des Baums für Y-Offset bestimmen
@@ -113,6 +115,7 @@ public class Main extends JFrame implements ActionListener {
 		JButton pressedButton = (JButton) arg0.getSource();
 		boolean erfolgreich;
 		ArrayList<String> travListe;
+		JScrollPane travPane;
 		if (pressedButton.equals(loeschenButton)) {
 			erfolgreich = baum.elementLoeschen(new Element(inputTextfield.getText().trim()));
 			
@@ -123,20 +126,36 @@ public class Main extends JFrame implements ActionListener {
 			inputTextfield.setText("");
 			this.initialize(baum);
 		} else if (pressedButton.equals(hinzufuegenButton)) {
-			baum.elementHinzufuegen(baum.getRoot(), inputTextfield.getText().trim());
+			baum.elementHinzufuegen(inputTextfield.getText().trim());
 			inputTextfield.setText("");
 			this.initialize(baum);
 		} else if(pressedButton.equals(inorderButton)) {
 			travListe = baum.inorderTraversierung();
-			JOptionPane.showMessageDialog(this, new JTextArea(this.concatList(travListe)));
+			JTextArea textArea = new JTextArea(this.concatList(travListe));
+			textArea.setBackground((this.getBackground()));
+			
+			JOptionPane.showMessageDialog(this, textArea);
 		} else if(pressedButton.equals(preorderButton)) {
 			travListe = baum.preorderTraversierung();
+			JTextArea textArea = new JTextArea(this.concatList(travListe));
+			textArea.setBackground((this.getBackground()));
+			
+			JOptionPane.showMessageDialog(this, textArea);
 		} else if(pressedButton.equals(postorderButton)) {
 			travListe = baum.postorderTraversierung();
+			JTextArea textArea = new JTextArea(this.concatList(travListe));
+			textArea.setBackground((this.getBackground()));
+			
+			JOptionPane.showMessageDialog(this, textArea);
 		}
 		baum.berechneElementPositionen();
 	}
 	
+	/**
+	 * Konkatiniert eine StringListe zu einen String
+	 * @param liste
+	 * @return concattedString
+	 */
 	private String concatList(ArrayList<String> liste) {
 		String concattedString = "";
 		

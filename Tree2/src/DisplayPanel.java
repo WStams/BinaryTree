@@ -4,18 +4,30 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+/**
+ * Eine von JPanel erbende Klasse, welche den Binärbaum zeichnet
+ * @author Justin Mertmann, Wayne Stams
+ *
+ */
 class DisplayPanel extends JPanel {
 	private Binaerbaum t;
 	private int xOffset = 20, yOffset = 20;
 	private int circleSize = 20;
 	private int circleOffset = circleSize/2;
 	
+	/**
+	 * Konstruktor
+	 * @param t Zu erstellender Binärbaum
+	 */
 	public DisplayPanel(Binaerbaum t) {
 		this.t = t;
 		setBackground(Color.white);
 		setForeground(Color.black);
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	public void paintComponent(Graphics g) {
 		g.setColor(getBackground());
 		g.fillRect(0, 0, getWidth(), getHeight());
@@ -30,16 +42,21 @@ class DisplayPanel extends JPanel {
 		this.zeichneBaum(g, t.getRoot());
 	}
 	
-	public void rev() {
-		revalidate();
-	}
-	
+	/**
+	 * Methode um den Binärbaum auf ein Panel zu zeichnen
+	 * @param g Graphics Objekt, welches die Formen zeichnet
+	 * @param root zu zeichnendes Element
+	 */
 	public void zeichneBaum(Graphics g, Element root) {
 		int dx, dy, dx2, dy2;
 		int BREITE_PANEL = this.getParent().getWidth();
 		int HOEHE_PANEL = this.getParent().getHeight();
 		int X_GROESSE, Y_GROESSE;
-		X_GROESSE = BREITE_PANEL  / t.getTotalnodes(); 
+		
+		if(t.getTotalnodes() > 0)
+			X_GROESSE = BREITE_PANEL  / t.getTotalnodes();
+		else 
+			X_GROESSE = BREITE_PANEL  / 1;
 		Y_GROESSE = (HOEHE_PANEL - 500) / (t.getMaxheight() + 1); 
 
 		if (root != null) { 
