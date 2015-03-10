@@ -15,7 +15,7 @@ class Element {  //standard Binary Tree node
       this.nutzdaten = s;
     }
 
-	public String getData() {
+	public String getNutzdaten() {
 		return nutzdaten;
 	}
 

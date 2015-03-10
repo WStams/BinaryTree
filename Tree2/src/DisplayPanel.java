@@ -46,7 +46,8 @@ class DisplayPanel extends JPanel {
 			zeichneBaum(g, root.getLinkesKind());
 			dx = root.getXpos() * X_GROESSE + xOffset;
 			dy = root.getYpos() * Y_GROESSE + yOffset;
-			String s = root.getData(); 
+			
+			String s = root.getNutzdaten(); 
 			
 			g.setColor(Color.BLUE);
 			// Knoten als Kreis anzeigen
@@ -56,16 +57,15 @@ class DisplayPanel extends JPanel {
 			g.setColor(Color.BLACK);
 			g.drawString(s, dx + xOffset, dy + (yOffset / 2));
 			
-			// Linie zum Kind zeichnen
-			if (root.getLinkesKind() != null) { // Linie zum linken Kind
-				
+			// Linie zum linken Kind zeichnen
+			if (root.getLinkesKind() != null) {
 				// Positionen definieren
 				dx2 = root.getLinkesKind().getXpos() * X_GROESSE + xOffset;
 				dy2 = root.getLinkesKind().getYpos() * Y_GROESSE + yOffset;
 				g.drawLine(dx, dy, dx2, dy2);
 			}
-			if (root.getRechtesKind() != null) { // Linie zum rechten Kind
-				
+			// Linie zum rechten Kind-Element, sofern eines vorhanden ist
+			if (root.getRechtesKind() != null) {
 				// Positionen definieren
 				dx2 = root.getRechtesKind().getXpos() * X_GROESSE + xOffset; 
 				dy2 = root.getRechtesKind().getYpos() * Y_GROESSE + yOffset;

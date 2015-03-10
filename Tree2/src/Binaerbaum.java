@@ -40,9 +40,9 @@ class Binaerbaum {
 			root = new Element(s, null, null);
 			return root;
 		} else {
-			if (s.compareTo((String) (root.getData())) == 0) {
+			if (s.compareTo((String) (root.getNutzdaten())) == 0) {
 				return root;
-			} else if (s.compareTo((String) (root.getData())) < 0)
+			} else if (s.compareTo((String) (root.getNutzdaten())) < 0)
 				root.setLinkesKind(insert(root.getLinkesKind(), s));
 			else
 				root.setRechtesKind(insert(root.getRechtesKind(), s));
@@ -65,7 +65,7 @@ class Binaerbaum {
 	}
 	
 	private void loescheElementOhneKind(Element element){
-		Element parent = findParent(element.getData());
+		Element parent = findParent(element.getNutzdaten());
 		
 		if(parent == null) {
 			this.rootElement = null;
@@ -79,7 +79,7 @@ class Binaerbaum {
 	}
 	
 	private void loescheElementMitNurRechtemKind(Element element) { 
-		Element parentVomWegfall = findParent(element.getData());
+		Element parentVomWegfall = findParent(element.getNutzdaten());
 		
 		if(parentVomWegfall == null) {
 			this.rootElement.setRechtesKind(element.getRechtesKind());
@@ -93,7 +93,7 @@ class Binaerbaum {
 	}
 	
 	private void loescheElementMitNurLinkemKind(Element element) { 
-		Element parentVomWegfall = findParent(element.getData());
+		Element parentVomWegfall = findParent(element.getNutzdaten());
 		
 		if(parentVomWegfall == null) {
 			this.rootElement.setLinkesKind(element.getLinkesKind());
@@ -108,22 +108,8 @@ class Binaerbaum {
 	
 	private void loescheElementDasZweiKinderHat(Element element) {
 		Element ersatzElement = kleinstesElementAusDemRechtenZweig(element);
-		Element parent = findParent(element.getData());
-		Element parentVomErsatz = findParent(ersatzElement.getData());
-		
-		System.out.println(parent);
-		System.out.println("--");
-		System.out.println(parentVomErsatz.getData() + " -- parent Vom Ersatz");
-		System.out.println(parentVomErsatz.getLinkesKind().getData() + " -- LeftChild");
-		System.out.println(parentVomErsatz.getRechtesKind().getData() + " -- RightChild");
-		
-		System.out.println("Ersatz: " + ersatzElement.getData());
-		if(ersatzElement.getRechtesKind() != null) {
-			System.out.println("ErsatzR: " + ersatzElement.getRechtesKind().getData());
-		}
-		if(ersatzElement.getLinkesKind() != null) {
-			System.out.println("ErsatzL: " + ersatzElement.getLinkesKind().getData());
-		}
+		Element parent = findParent(element.getNutzdaten());
+		Element parentVomErsatz = findParent(ersatzElement.getNutzdaten());
 		
 		if(parent == null) {
 			if(isLinkesKind(ersatzElement)) {
@@ -231,11 +217,11 @@ class Binaerbaum {
 		Element gefundenesElement = null;
 
 		if (aktElement != null) {
-			if (aktElement.getData().equals(suchElement.getData())) {
+			if (aktElement.getNutzdaten().equals(suchElement.getNutzdaten())) {
 				gefundenesElement = aktElement;
 			} else {
-				if (suchElement.getData().compareTo(
-						aktElement.getData()) > 0) {
+				if (suchElement.getNutzdaten().compareTo(
+						aktElement.getNutzdaten()) > 0) {
 					gefundenesElement = sucheElement(suchElement,
 							aktElement.getRechtesKind());
 				} else {
@@ -267,7 +253,7 @@ class Binaerbaum {
 			Element parent) {
 		if (aktElement == null) {
 			return null;
-		} else if (!aktElement.getData().equals(suchNutzdaten)) {
+		} else if (!aktElement.getNutzdaten().equals(suchNutzdaten)) {
 			parent = findParent(suchNutzdaten, aktElement.getLinkesKind(),
 					aktElement);
 			if (parent == null) {
@@ -294,33 +280,27 @@ class Binaerbaum {
 		this.rootElement = rootElement;
 	}
 
-	public Element getLowestRightChild(Element suchElement) {
-
-		return null;
-
-	}
-
 	public boolean isLinkesKind(Element suchElement) {
-		System.out.println("IsLinkesKind: " + suchElement.getData());
-		Element parent = this.findParent(suchElement.getData());
+		System.out.println("IsLinkesKind: " + suchElement.getNutzdaten());
+		Element parent = this.findParent(suchElement.getNutzdaten());
 
 		if(parent.getLinkesKind() == null) {
 			return false;
 		}
-		if (parent.getLinkesKind() != null && parent.getLinkesKind().getData().equals(suchElement.getData()))
+		if (parent.getLinkesKind() != null && parent.getLinkesKind().getNutzdaten().equals(suchElement.getNutzdaten()))
 			return true;
 		else
 			return false;
 	}
 
 	public boolean isRechtesKind(Element suchElement) {
-		Element parent = this.findParent(suchElement.getData());
+		Element parent = this.findParent(suchElement.getNutzdaten());
 		
 		if(parent.getRechtesKind() == null) {
 			return false;
 		}
 		
-		if (parent.getRechtesKind() != null && parent.getRechtesKind().getData().equals(suchElement.getData()))
+		if (parent.getRechtesKind() != null && parent.getRechtesKind().getNutzdaten().equals(suchElement.getNutzdaten()))
 			return true;
 		else
 			return false;
