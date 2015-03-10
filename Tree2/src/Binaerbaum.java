@@ -36,8 +36,11 @@ class Binaerbaum {
 
 	/**
 	 * Vergleicht die Werte, das höhere wird zurückgegeben
-	 * @param a Wert A
-	 * @param b Wert B
+	 * 
+	 * @param a
+	 *            Wert A
+	 * @param b
+	 *            Wert B
 	 * @return a oder b, je nachdem welcher höher ist
 	 */
 	public int werteVergleich(int a, int b) {
@@ -77,11 +80,10 @@ class Binaerbaum {
 
 	/**
 	 * Fügt ein neues Element dem Baum hinzu
-	 * @param s
+	 * 
+	 * @param nutzdaten
 	 *            Nutzdaten im Element
-	 * @return hinzugefügtes Element
 	 */
-
 	public void elementHinzufuegen(String nutzdaten) {
 		Element neuElement = new Element(nutzdaten);
 
@@ -393,7 +395,9 @@ class Binaerbaum {
 	/**
 	 * Sucht das Parent-Element vom übergebenen Nutzdaten-String
 	 * 
-	 * @param suchNutzdaten der String der im Element steht, dessen Parent gefunden werde soll
+	 * @param suchNutzdaten
+	 *            der String der im Element steht, dessen Parent gefunden werde
+	 *            soll
 	 * @return das gefundene Parent-Element
 	 */
 	public Element findParent(String suchNutzdaten) {
@@ -403,9 +407,13 @@ class Binaerbaum {
 	/**
 	 * Sucht das Parent-Element vom übergebenen Nutzdaten-String
 	 * 
-	 * @param suchNutzdaten der String der im Element steht, dessen Parent gefunden werde soll
-	 * @param aktElement derzeitig fokussiertes Element
-	 * @param parent das Parent-Element
+	 * @param suchNutzdaten
+	 *            der String der im Element steht, dessen Parent gefunden werde
+	 *            soll
+	 * @param aktElement
+	 *            derzeitig fokussiertes Element
+	 * @param parent
+	 *            das Parent-Element
 	 * @return gefundenes Parent-Element
 	 */
 	public Element findParent(String suchNutzdaten, Element aktElement,
@@ -432,7 +440,9 @@ class Binaerbaum {
 
 	/**
 	 * Setzt das Root-Element
-	 * @param rootElement zu setzendes Root-Element
+	 * 
+	 * @param rootElement
+	 *            zu setzendes Root-Element
 	 */
 	public void setRootElement(Element rootElement) {
 		this.rootElement = rootElement;
@@ -636,7 +646,83 @@ class Binaerbaum {
 		return maxheight;
 	}
 
+	/**
+	 * Maximale Tiefe des Baumes setzen
+	 * 
+	 * @param maxheight
+	 *            zu setzende maximale Tiefe
+	 */
 	public void setMaxheight(int maxheight) {
 		this.maxheight = maxheight;
+	}
+
+	/**
+	 * Startmethode um den Binärbaum zu balancieren
+	 */
+	public void balanceTree() {
+		ArrayList<Element> listOfNodes = new ArrayList<Element>();
+
+		fuelleListeInReihenfolge(this.rootElement, listOfNodes);
+		loescheKinder(listOfNodes);
+
+		this.rootElement = null;
+		int count = totalnodes;
+		totalnodes = 0;
+
+		balanciereBaum(0, count - 1, listOfNodes);
+	}
+
+	/**
+	 * Balanciert den Baum aus, damit der rechte und linke Zwei je ungefähr
+	 * gleich groß sind
+	 * 
+	 * @param min
+	 *            Das kleinste Element
+	 * @param max
+	 *            Das größte Element
+	 * @param list
+	 *            Die Liste mit allen Elementen
+	 */
+	private void balanciereBaum(int min, int max, ArrayList<Element> list) {
+		if (min <= max) {
+			int middleNode = (int) Math.ceil(((double) min + max) / 2);
+
+			elementHinzufuegen(list.get(middleNode).getNutzdaten());
+
+			balanciereBaum(min, middleNode - 1, list);
+
+			balanciereBaum(middleNode + 1, max, list);
+		}
+	}
+
+	/**
+	 * Füllt eine ArrayList mit allen Elementen Inorder!
+	 * 
+	 * @param node
+	 *            Element welches hinzugefügt wird
+	 * @param list
+	 *            Liste mit allen Elementen in aufsteigender Reihenfolge
+	 */
+	private void fuelleListeInReihenfolge(Element node, ArrayList<Element> list) {
+		if (node != null) {
+			fuelleListeInReihenfolge(node.getLinkesKind(), list);
+
+			list.add(node);
+
+			fuelleListeInReihenfolge(node.getRechtesKind(), list);
+		}
+	}
+
+	/**
+	 * Löscht die Kinder aller Element in der Liste
+	 * 
+	 * @param list
+	 *            eine Liste aus Elementen
+	 */
+	private void loescheKinder(ArrayList<Element> list) {
+		for (Element node : list) {
+			node.setLinkesKind(null);
+			node.setRechtesKind(null);
+		}
 	}
 }
