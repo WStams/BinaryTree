@@ -1,17 +1,21 @@
+import java.util.ArrayList;
+
 class Binaerbaum {
 	private Element rootElement;
 	private int totalnodes = 0; 
 	private int maxheight = 0;
-
+	private ArrayList<String> traversierungsListe = new ArrayList<String>();
+	
+	
 	public Binaerbaum() {
 		rootElement = null;
 	}
 
-	public int treeHeight(Element t) {
+	public int berechneHoehe(Element t) {
 		if (t == null)
 			return -1;
 		else
-			return 1 + werteVergleich(treeHeight(t.getLinkesKind()), treeHeight(t.getRechtesKind()));
+			return 1 + werteVergleich(berechneHoehe(t.getLinkesKind()), berechneHoehe(t.getRechtesKind()));
 	}
 
 	public int werteVergleich(int a, int b) {
@@ -23,6 +27,7 @@ class Binaerbaum {
 
 	public void berechneElementPositionen() {
 		int depth = 1;
+		totalnodes = 0;
 		inorderTraversierung(rootElement, depth);
 	}
 
@@ -30,12 +35,13 @@ class Binaerbaum {
 		if (t != null) {
 			inorderTraversierung(t.getLinkesKind(), depth + 1);
 			t.setXpos(totalnodes++);
+			traversierungsListe.add(t.getNutzdaten());
 			t.setYpos(depth); 
 			inorderTraversierung(t.getRechtesKind(), depth + 1);
 		}
 	}
 
-	public Element insert(Element root, String s) {
+	public Element elementHinzufuegen(Element root, String s) {
 		if (root == null) {
 			root = new Element(s, null, null);
 			return root;
@@ -43,24 +49,29 @@ class Binaerbaum {
 			if (s.compareTo((String) (root.getNutzdaten())) == 0) {
 				return root;
 			} else if (s.compareTo((String) (root.getNutzdaten())) < 0)
-				root.setLinkesKind(insert(root.getLinkesKind(), s));
+				root.setLinkesKind(elementHinzufuegen(root.getLinkesKind(), s));
 			else
-				root.setRechtesKind(insert(root.getRechtesKind(), s));
+				root.setRechtesKind(elementHinzufuegen(root.getRechtesKind(), s));
 			return root;
 		}
 	}
 	
-	public void elementLoeschen(Element loeschElement) {
+	public boolean elementLoeschen(Element loeschElement) {
 		Element wegfallendesElement = sucheElement(loeschElement, this.rootElement);
 		
-		if(hatNurLinkesKind(wegfallendesElement)) {
-			this.loescheElementMitNurLinkemKind(wegfallendesElement);
-		} else if(hatNurRechtesKind(wegfallendesElement)) {
-			this.loescheElementMitNurRechtemKind(wegfallendesElement);
-		} else if(hatKeineKinder(wegfallendesElement)) {
-			this.loescheElementOhneKind(wegfallendesElement);
-		} else if(hatBeideKinder(wegfallendesElement)) {
-			this.loescheElementDasZweiKinderHat(wegfallendesElement);
+		if(wegfallendesElement == null) {
+			return false;
+		} else {
+			if(hatNurLinkesKind(wegfallendesElement)) {
+				this.loescheElementMitNurLinkemKind(wegfallendesElement);
+			} else if(hatNurRechtesKind(wegfallendesElement)) {
+				this.loescheElementMitNurRechtemKind(wegfallendesElement);
+			} else if(hatKeineKinder(wegfallendesElement)) {
+				this.loescheElementOhneKind(wegfallendesElement);
+			} else if(hatBeideKinder(wegfallendesElement)) {
+				this.loescheElementDasZweiKinderHat(wegfallendesElement);
+			}
+			return true;
 		}
 	}
 	
@@ -95,8 +106,9 @@ class Binaerbaum {
 	private void loescheElementMitNurLinkemKind(Element element) { 
 		Element parentVomWegfall = findParent(element.getNutzdaten());
 		
+		
 		if(parentVomWegfall == null) {
-			this.rootElement.setLinkesKind(element.getLinkesKind());
+			this.rootElement = this.rootElement.getLinkesKind();
 		} else {
 			if(isLinkesKind(element)) {
 				parentVomWegfall.setLinkesKind(element.getLinkesKind());
@@ -183,27 +195,49 @@ class Binaerbaum {
 		return aktElement;
 	}
 
+	public ArrayList<String> preorderTraversierung() {
+		this.resetTravListe();
+		this.preorderTraversierung(this.rootElement);
+		return traversierungsListe;
+	}
+	
+	public ArrayList<String> inorderTraversierung() {
+		this.resetTravListe();
+		this.inorderTraversierung(rootElement, 1);
+		return traversierungsListe;
+	}
+	
 	/**
 	 * 
 	 * @param aktElement
 	 */
-	public void preorderTraversieren(Element aktElement) {
+	public void preorderTraversierung(Element aktElement) {
 		if (aktElement != null) {
-			System.out.println(aktElement);
-			preorderTraversieren(aktElement.getLinkesKind());
-			preorderTraversieren(aktElement.getRechtesKind());
+			traversierungsListe.add(aktElement.getNutzdaten());
+			preorderTraversierung(aktElement.getLinkesKind());
+			preorderTraversierung(aktElement.getRechtesKind());
 		}
 	}
 
+	public ArrayList<String> postorderTraversierung() {
+		this.resetTravListe();
+		this.postorderTraversierung(this.rootElement);
+		return traversierungsListe;
+	}
+	
+	public void resetTravListe() {
+		traversierungsListe = new ArrayList<String>();
+	}
+	
 	/**
 	 * 
 	 * @param aktElement
 	 */
-	public void postorderTraversieren(Element aktElement) {
+	public void postorderTraversierung(Element aktElement) {
 		if (aktElement != null) {
-			preorderTraversieren(aktElement.getLinkesKind());
-			preorderTraversieren(aktElement.getRechtesKind());
-			System.out.println(aktElement);
+			postorderTraversierung(aktElement.getLinkesKind());
+			postorderTraversierung(aktElement.getRechtesKind());
+			traversierungsListe.add(aktElement.getNutzdaten());
 		}
 	}
 

@@ -39,8 +39,8 @@ class DisplayPanel extends JPanel {
 		int BREITE_PANEL = this.getParent().getWidth();
 		int HOEHE_PANEL = this.getParent().getHeight();
 		int X_GROESSE, Y_GROESSE;
-		X_GROESSE = BREITE_PANEL / t.getTotalnodes(); 
-		Y_GROESSE = (HOEHE_PANEL - 10) / (t.getMaxheight() + 1); 
+		X_GROESSE = BREITE_PANEL  / t.getTotalnodes(); 
+		Y_GROESSE = (HOEHE_PANEL - 500) / (t.getMaxheight() + 1); 
 
 		if (root != null) { 
 			zeichneBaum(g, root.getLinkesKind());
@@ -64,7 +64,7 @@ class DisplayPanel extends JPanel {
 				dy2 = root.getLinkesKind().getYpos() * Y_GROESSE + yOffset;
 				g.drawLine(dx, dy, dx2, dy2);
 			}
-			// Linie zum rechten Kind-Element, sofern eines vorhanden ist
+			// Linie zum rechten Kind-Element, ofern eines vorhanden ist
 			if (root.getRechtesKind() != null) {
 				// Positionen definieren
 				dx2 = root.getRechtesKind().getXpos() * X_GROESSE + xOffset; 

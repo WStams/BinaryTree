@@ -54,4 +54,9 @@ class Element {  //standard Binary Tree node
 	public void setYpos(int ypos) {
 		this.ypos = ypos;
 	}
+	
+	@Override
+	public String toString() {
+		return nutzdaten;
+	}
   }
