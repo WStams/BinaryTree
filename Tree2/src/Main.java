@@ -12,7 +12,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.server.UID;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -105,6 +107,13 @@ public class Main extends JFrame implements ActionListener {
 	 *            beim Start übergebene Argumente
 	 */
 	public static void main(String[] args) {
+		UUID uuid;
+		
+		for(int i = 0; i < 100; i++) {
+			String id = UUID.randomUUID().toString().substring(0,5);
+			baum.elementHinzufuegen(id);
+		}
+		/*
 		baum.elementHinzufuegen("JAN");
 		baum.elementHinzufuegen("FEB");
 		baum.elementHinzufuegen("MAE");
@@ -117,7 +126,7 @@ public class Main extends JFrame implements ActionListener {
 		baum.elementHinzufuegen("OKT");
 		baum.elementHinzufuegen("NOV");
 		baum.elementHinzufuegen("DEZ");
-
+*/
 		baum.inorderTraversierung(baum.getRoot(), 0);
 
 		// Tiefe des Baums für Y-Offset bestimmen
