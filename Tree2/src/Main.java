@@ -167,7 +167,7 @@ public class Main extends JFrame implements ActionListener {
 
 			JOptionPane.showMessageDialog(this, textArea);
 		} else if (pressedButton.equals(balanceButton)) {
-			baum.balanceTree();
+			baum.balanciereBaum();
 		}
 		baum.berechneElementPositionen();
 		initialize(baum);

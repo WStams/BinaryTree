@@ -659,14 +659,14 @@ class Binaerbaum {
 	/**
 	 * Startmethode um den Binärbaum zu balancieren
 	 */
-	public void balanceTree() {
+	public void balanciereBaum() {
 		ArrayList<Element> listOfNodes = new ArrayList<Element>();
 
 		fuelleListeInReihenfolge(this.rootElement, listOfNodes);
 		loescheKinder(listOfNodes);
 
 		this.rootElement = null;
-		int count = totalnodes;
+		int count = totalnodes;  
 		totalnodes = 0;
 
 		balanciereBaum(0, count - 1, listOfNodes);
@@ -684,13 +684,18 @@ class Binaerbaum {
 	 *            Die Liste mit allen Elementen
 	 */
 	private void balanciereBaum(int min, int max, ArrayList<Element> list) {
-		if (min <= max) {
+		if (min <= max) { 
+			// Mittelwert bestimmen
 			int middleNode = (int) Math.ceil(((double) min + max) / 2);
 
+			// R E K U R S I O N
+			// Das derzeitige Element dem Baum hinzufügen
 			elementHinzufuegen(list.get(middleNode).getNutzdaten());
 
+			// Kleineres Element hinzufügen
 			balanciereBaum(min, middleNode - 1, list);
 
+			// größeres Element hinzufügen
 			balanciereBaum(middleNode + 1, max, list);
 		}
 	}
